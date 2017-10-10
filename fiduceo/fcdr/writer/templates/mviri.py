@@ -14,6 +14,8 @@ SRF_SIZE_VIS = 1011
 SRF_SIZE_IR_WV = 1011
 SOL_IRR_SIZE = 24
 
+scale_u_lat=1.5E-05#7.62939E-06
+
 TIME_FILL_VALUE = -32768
 
 
@@ -27,10 +29,18 @@ class MVIRI:
     @staticmethod
     def add_original_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
+        # binary flag
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint8)
+        variable = Variable(["y", "x"], default_array)
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint8))
+        variable.attrs["standard_name"] = "quality_pixel_bitmask"
+        variable.attrs["long_name"] = "bitflags for each pixel to indicate quality [all bits = 0 -> use, any bit = 1 -> do not use]in MSB0 order: [bit 0: geolocation, bit1: timing, bit2: calibration, bit3: radiometer]"
+        dataset["quality_pixel_bitmask"] = variable
+        
         # time
-        default_array = DefaultData.create_default_array(MVIRI.IR_DIMENSION, MVIRI.IR_DIMENSION, np.uint16)
+        default_array = DefaultData.create_default_array(IR_DIMENSION, IR_DIMENSION, np.uint32)
         variable = Variable([IR_Y_DIMENSION, IR_X_DIMENSION], default_array)
-        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint16))
+        tu.add_fill_value(variable, DefaultData.get_default_fill_value(np.uint32))
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time of pixel"
         tu.add_units(variable, "seconds since 1970-01-01 00:00:00")
@@ -147,9 +157,16 @@ class MVIRI:
     @staticmethod
     def add_easy_fcdr_variables(dataset, height):
         # height is ignored - supplied just for interface compatibility tb 2017-02-05
+        #FRue: added 3.7.2017:
+        #SSP
+        dataset["sub_satellite_latitude_start"] = tu.create_scalar_float_variable(long_name="latitude of the sub satellite point at image start", units="degree_north")
+        dataset["sub_satellite_longitude_start"] = tu.create_scalar_float_variable(long_name="longitude of the sub satellite point at image start", units="degree_east")
+        dataset["sub_satellite_latitude_end"] = tu.create_scalar_float_variable(long_name="latitude of the sub satellite point at image end", units="degree_north")
+        dataset["sub_satellite_longitude_end"] = tu.create_scalar_float_variable(long_name="longitude of the sub satellite point at image end", units="degree_east")
 
+        
         # reflectance
-        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16)
         variable = Variable(["y", "x"], default_array)
         variable.attrs["standard_name"] = "toa_bidirectional_reflectance_vis"
         variable.attrs["long_name"] = "top of atmosphere bidirectional reflectance factor per pixel of the visible band with central wavelength 0.7"
@@ -158,19 +175,21 @@ class MVIRI:
         dataset["toa_bidirectional_reflectance_vis"] = variable
 
         # u_random
-        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["long_name"] = "random uncertainty per pixel"
-        tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
+        variable.attrs["long_name"] = "fractional random uncertainty per pixel"
+        tu.add_units(variable, "fraction of toa_bidirectional_reflectance")
+        tu.set_unsigned(variable)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-04)
         dataset["u_random_toa_bidirectional_reflectance"] = variable
 
         # u_non_random
-        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, np.uint16, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
-        variable.attrs["long_name"] = "non-random uncertainty per pixel"
-        tu.add_units(variable, "percent")
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-05)
+        variable.attrs["long_name"] = "fractional non-random uncertainty per pixel"
+        tu.add_units(variable, "fraction of toa_bidirectional_reflectance")
+        tu.set_unsigned(variable)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 1.52588E-04)
         dataset["u_non_random_toa_bidirectional_reflectance"] = variable
 
     @staticmethod
@@ -185,10 +204,10 @@ class MVIRI:
         tu.add_units(variable, "count")
         dataset["count_vis"] = variable
 
-        dataset["u_latitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Latitude", unsigned=True)
+        dataset["u_latitude"] = MVIRI._create_angle_variable_int(scale_u_lat, long_name="Uncertainty in Latitude", unsigned=True)
         MVIRI._add_geo_correlation_attributes(dataset["u_latitude"])
 
-        dataset["u_longitude"] = MVIRI._create_angle_variable_int(7.62939E-05, long_name="Uncertainty in Longitude", unsigned=True)
+        dataset["u_longitude"] = MVIRI._create_angle_variable_int(scale_u_lat, long_name="Uncertainty in Longitude", unsigned=True)
         MVIRI._add_geo_correlation_attributes(dataset["u_longitude"])
 
         # u_time
@@ -263,13 +282,14 @@ class MVIRI:
 
     @staticmethod
     def _create_angle_variable_int(scale_factor, standard_name=None, long_name=None, unsigned=False, fill_value=None):
-        default_array = DefaultData.create_default_array(MVIRI.FULL_DIMENSION, MVIRI.FULL_DIMENSION, np.float32, fill_value=np.NaN)
-        variable = Variable(["y", "x"], default_array)
-
+        
         if unsigned is True:
             data_type = np.uint16
         else:
             data_type = np.int16
+            
+        default_array = DefaultData.create_default_array(FULL_DIMENSION, FULL_DIMENSION, data_type, fill_value=np.NaN)
+        variable = Variable(["y", "x"], default_array)
 
         if fill_value is None:
             fill_value = DefaultData.get_default_fill_value(data_type)
