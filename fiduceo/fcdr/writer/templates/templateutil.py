@@ -86,3 +86,6 @@ class TemplateUtil:
     @staticmethod
     def add_encoding(variable, data_type, fill_value, scale_factor=1.0, offset=0.0):
         variable.encoding = dict([('dtype', data_type), ('_FillValue', fill_value), ('scale_factor', scale_factor), ('add_offset', offset)])
+        for key, value in variable.encoding.iteritems():
+          if not key in 'dtype':
+            variable.attrs[key] = value
