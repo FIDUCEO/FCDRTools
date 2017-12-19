@@ -20,14 +20,14 @@ class AVHRR:
         tu.add_geolocation_variables(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
         tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKS_2D)
 
-        # Time
+        # time
         default_array = DefaultData.create_default_vector(height, np.float64, fill_value=np.NaN)
         variable = Variable(["y"], default_array)
         tu.add_fill_value(variable, np.NaN)
         tu.add_units(variable, "s")
         variable.attrs["standard_name"] = "time"
         variable.attrs["long_name"] = "Acquisition time in seconds since 1970-01-01 00:00:00"
-        dataset["Time"] = variable
+        dataset["time"] = variable
 
         # relative_azimuth_angle
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
@@ -308,7 +308,7 @@ class AVHRR:
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
 
-        tu.add_units(variable, "percent")
+        tu.add_units(variable, "1")
         variable.attrs["long_name"] = long_name
 
         if structured:
