@@ -103,9 +103,9 @@ class HIRSAssert(unittest.TestCase):
         dq_bitmask = ds.variables["data_quality_bitmask"]
         self.assertEqual((6, 56), dq_bitmask.shape)
         self.assertEqual(0, dq_bitmask.data[0, 5])
-        self.assertEqual("1, 2, 4, 8, 16", dq_bitmask.attrs["flag_masks"])
+        self.assertEqual("1, 2, 4", dq_bitmask.attrs["flag_masks"])
         self.assertEqual(
-            "suspect_mirror suspect_geo suspect_time outlier_nos uncertainty_too_large",
+            "suspect_mirror outlier_nos uncertainty_too_large",
             dq_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", dq_bitmask.attrs["standard_name"])
         self.assertEqual("longitude latitude", dq_bitmask.attrs["coordinates"])
@@ -113,10 +113,10 @@ class HIRSAssert(unittest.TestCase):
         qual_scan_bitmask = ds.variables["quality_scanline_bitmask"]
         self.assertEqual((6,), qual_scan_bitmask.shape)
         self.assertEqual(0, qual_scan_bitmask.data[5])
-        self.assertEqual("1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824",
+        self.assertEqual("1, 2, 4, 8, 16",
                          qual_scan_bitmask.attrs["flag_masks"])
         self.assertEqual(
-            "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant reduced_context bad_temp_no_rself",
+            "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time",
             qual_scan_bitmask.attrs["flag_meanings"])
         self.assertEqual("status_flag", qual_scan_bitmask.attrs["standard_name"])
         self.assertEqual("quality_indicator_bitfield", qual_scan_bitmask.attrs["long_name"])
