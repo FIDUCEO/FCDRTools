@@ -32,10 +32,10 @@ class HIRS:
     def add_quality_flags(dataset, height):
         tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
 
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint16, fill_value=0)
-        variable = Variable(["y", "x"], default_array)
-        variable.attrs["flag_masks"] = "1, 2, 4, 8, 16"
-        variable.attrs["flag_meanings"] = "suspect_mirror suspect_geo suspect_time outlier_nos uncertainty_too_large"
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.uint16, fill_value=0)
+        variable = Variable(["channel", "y", "x"], default_array)
+        variable.attrs["flag_masks"] = "1, 2, 4"
+        variable.attrs["flag_meanings"] = "suspect_mirror outlier_nos uncertainty_too_large"
         variable.attrs["standard_name"] = "status_flag"
         tu.add_chunking(variable, CHUNKING_2D)
         tu.add_geolocation_attribute(variable)
@@ -75,9 +75,9 @@ class HIRS:
         variable.attrs["standard_name"] = "status_flag"
         variable.attrs["long_name"] = "quality_indicator_bitfield"
         variable.attrs[
-            "flag_masks"] = "1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824"
+            "flag_masks"] = "1, 2, 4, 8, 16"
         variable.attrs[
-            "flag_meanings"] = "do_not_use_scan time_sequence_error data_gap_preceding_scan no_calibration no_earth_location clock_update status_changed line_incomplete, time_field_bad time_field_bad_not_inf inconsistent_sequence scan_time_repeat uncalib_bad_time calib_few_scans uncalib_bad_prt calib_marginal_prt uncalib_channels uncalib_inst_mode quest_ant_black_body zero_loc bad_loc_time bad_loc_marginal bad_loc_reason bad_loc_ant reduced_context bad_temp_no_rself"
+            "flag_meanings"] = "do_not_use_scan reduced_context bad_temp_no_rself suspect_geo suspect_time" 
         dataset["quality_scanline_bitmask"] = variable
 
         default_array = DefaultData.create_default_array(srf_size, NUM_CHANNELS, np.float32, fill_value=np.NaN)

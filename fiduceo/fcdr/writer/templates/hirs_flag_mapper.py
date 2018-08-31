@@ -13,8 +13,8 @@ class HIRS_FlagMapper(DefaultFlagMapper):
     UNCERTAINTY_TOO_LARGE = np.uint8(16)
 
     # scanline_quality
-    REDUCED_CONTEXT = np.int32(536870912)
-    BAD_TEMP_NO_RSELF = np.int32(1073741824)
+    REDUCED_CONTEXT = np.int32(2)
+    BAD_TEMP_NO_RSELF = np.int32(4)
 
     # channel_quality
     DO_NOT_USE = np.uint8(1)
