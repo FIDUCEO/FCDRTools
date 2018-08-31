@@ -32,8 +32,8 @@ class HIRS:
     def add_quality_flags(dataset, height):
         tu.add_quality_flags(dataset, SWATH_WIDTH, height, chunksizes=CHUNKING_2D)
 
-        default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.uint16, fill_value=0)
-        variable = Variable(["y", "x", "channel"], default_array)
+        default_array = DefaultData.create_default_array_3d(SWATH_WIDTH, height, NUM_CHANNELS, np.uint16, fill_value=0)
+        variable = Variable(["channel", "y", "x"], default_array)
         variable.attrs["flag_masks"] = "1, 2, 4"
         variable.attrs["flag_meanings"] = "suspect_mirror outlier_nos uncertainty_too_large"
         variable.attrs["standard_name"] = "status_flag"

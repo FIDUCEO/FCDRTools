@@ -289,7 +289,7 @@ class HirsEASYIoTest(unittest.TestCase):
             hirs_easy["bt"].data[:, :, x] = np.ones((944), np.int16) * x * 0.01
             hirs_easy["latitude"].data[:, x] = np.ones((944), np.int16) * x * 0.02
             hirs_easy["longitude"].data[:, x] = np.ones((944), np.int16) * x * 0.03
-            hirs_easy["data_quality_bitmask"].data[:, x] = np.ones((944), np.int8) * x
+            hirs_easy["data_quality_bitmask"].data[:, :, x] = np.ones((944), np.int8) * x
             hirs_easy["quality_pixel_bitmask"].data[:, x] = np.ones((944), np.int8) * x
             if type != "HIRS2":
                 hirs_easy["satellite_zenith_angle"].data[:, x] = np.ones((944), np.int16) * x * 0.04
