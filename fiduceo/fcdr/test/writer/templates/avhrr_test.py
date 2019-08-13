@@ -90,7 +90,7 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("status_flag", qs_bitmask.attrs["standard_name"])
         self.assertEqual("bitmask for quality per scanline", qs_bitmask.attrs["long_name"])
         self.assertEqual("1,2,4,8,16,32,64", qs_bitmask.attrs["flag_masks"])
-        self.assertEqual("do_not_use bad_time bad_navigation bad_calibration channel3a_present solar_contamination_failure solar_contamination", qs_bitmask.attrs["flag_meanings"])
+        self.assertEqual("do_not_use bad_time bad_navigation bad_calibration channel3a_present solar_contamination solar_in_earth_view", qs_bitmask.attrs["flag_meanings"])
 
         qc_bitmask = ds.variables["quality_channel_bitmask"]
         self.assertEqual((5, 6), qc_bitmask.shape)
@@ -150,15 +150,15 @@ class AVHRRTest(unittest.TestCase):
         ds = xr.Dataset()
         AVHRR.add_easy_fcdr_variables(ds, 5, lut_size=LUT_SIZE, corr_dx=12, corr_dy=13)
 
-        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="percent", valid_min=10, valid_max=1000)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="percent", valid_min=3, valid_max=5)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch1", long_name="common uncertainty per pixel for channel 1", units="percent", valid_min=10, valid_max=1000)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch2", long_name="independent uncertainty per pixel for channel 2", units="percent", valid_min=10, valid_max=1000)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch2", long_name="structured uncertainty per pixel for channel 2", units="percent", valid_min=3, valid_max=5)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch2", long_name="common uncertainty per pixel for channel 2", units="percent", valid_min=10, valid_max=1000)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch3a", long_name="independent uncertainty per pixel for channel 3a", units="percent", valid_min=10, valid_max=1000)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch3a", long_name="structured uncertainty per pixel for channel 3a", units="percent", valid_min=3, valid_max=5)
-        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch3a", long_name="common uncertainty per pixel for channel 3a", units="percent", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch1", long_name="independent uncertainty per pixel for channel 1", units="Reflectance", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch1", long_name="structured uncertainty per pixel for channel 1", units="Reflectance", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch1", long_name="common uncertainty per pixel for channel 1", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch2", long_name="independent uncertainty per pixel for channel 2", units="Reflectance", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch2", long_name="structured uncertainty per pixel for channel 2", units="Reflectance", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch2", long_name="common uncertainty per pixel for channel 2", units="percent", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_independent_Ch3a", long_name="independent uncertainty per pixel for channel 3a", units="Reflectance", valid_min=10, valid_max=1000)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_structured_Ch3a", long_name="structured uncertainty per pixel for channel 3a", units="Reflectance", valid_min=3, valid_max=5)
+        self._assert_correct_refl_uncertainty_variable(ds, "u_common_Ch3a", long_name="common uncertainty per pixel for channel 3a", units="percent", valid_min=3, valid_max=5)
 
         self._assert_correct_bt_uncertainty_variable(ds, "u_independent_Ch3b", long_name="independent uncertainty per pixel for channel 3b")
         self._assert_correct_bt_uncertainty_variable(ds, "u_structured_Ch3b", long_name="structured uncertainty per pixel for channel 3b")
@@ -326,9 +326,9 @@ class AVHRRTest(unittest.TestCase):
         self._assert_correct_counts_uncertainty_variable(ds, "Ch5_u_Ce", "Ch5 Uncertainty on earth counts")
         self._assert_earth_counts_pdf(ds, "Ch5_u_Ce")
 
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", long_name="Ch1 Total uncertainty on toa reflectance", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", long_name="Ch2 Total uncertainty on toa reflectance", units="percent")
-        self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", long_name="Ch3a Total uncertainty on toa reflectance", units="percent")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch1_u_Refl", long_name="Ch1 Total uncertainty on toa reflectance", units="Reflectance")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch2_u_Refl", long_name="Ch2 Total uncertainty on toa reflectance", units="Reflectance")
+        self._assert_correct_refl_uncertainty_variable(ds, "Ch3a_u_Refl", long_name="Ch3a Total uncertainty on toa reflectance", units="Reflectance")
 
         self._assert_correct_bt_uncertainty_variable(ds, "Ch3b_u_Bt", long_name="Ch3b Total uncertainty on brightness temperature")
         self._assert_correct_bt_uncertainty_variable(ds, "Ch4_u_Bt", long_name="Ch4 Total uncertainty on brightness temperature")
