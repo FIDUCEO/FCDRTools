@@ -99,7 +99,7 @@ class AvhrrIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_common_Ch1"]
-            self.assertAlmostEqual(0.072, variable.data[24, 24], 8)
+            self.assertAlmostEqual(0.07, variable.data[24, 24], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_common_Ch2"]

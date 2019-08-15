@@ -152,6 +152,15 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("K", bt_ascend.attrs["units"])
         self.assertEqual("toa_brightness_temperature", bt_ascend.attrs["standard_name"])
 
+        bt_full_ascend = ds.variables["BT_full_ascend"]
+        self.assertEqual((100, 360), bt_full_ascend.shape)
+        self.assertTrue(np.isnan(bt_full_ascend.values[73, 174]))
+        self.assertTrue(np.isnan(bt_full_ascend.attrs["_FillValue"]))
+        self.assertEqual("Monthly average of all brightness temperatures - including cloudy pixels - for ascending branches (calculated from daily averages)", bt_full_ascend.attrs["description"])
+        self.assertEqual("lon lat", bt_full_ascend.attrs["coordinates"])
+        self.assertEqual("K", bt_full_ascend.attrs["units"])
+        self.assertEqual("toa_brightness_temperature", bt_full_ascend.attrs["standard_name"])
+
         bt_descend = ds.variables["BT_descend"]
         self.assertEqual((100, 360), bt_descend.shape)
         self.assertTrue(np.isnan(bt_descend.values[74, 175]))
@@ -160,6 +169,15 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("lon lat", bt_descend.attrs["coordinates"])
         self.assertEqual("K", bt_descend.attrs["units"])
         self.assertEqual("toa_brightness_temperature", bt_descend.attrs["standard_name"])
+
+        bt_full_descend = ds.variables["BT_full_descend"]
+        self.assertEqual((100, 360), bt_full_descend.shape)
+        self.assertTrue(np.isnan(bt_full_descend.values[74, 175]))
+        self.assertTrue(np.isnan(bt_full_descend.attrs["_FillValue"]))
+        self.assertEqual("Monthly average of all brightness temperatures - including cloudy pixels - for descending branches (calculated from daily averages)", bt_full_descend.attrs["description"])
+        self.assertEqual("lon lat", bt_full_descend.attrs["coordinates"])
+        self.assertEqual("K", bt_full_descend.attrs["units"])
+        self.assertEqual("toa_brightness_temperature", bt_full_descend.attrs["standard_name"])
 
         u_ind_bt_asc = ds.variables["u_independent_BT_ascend"]
         self.assertEqual((100, 360), u_ind_bt_asc.shape)
@@ -177,6 +195,22 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("lon lat", u_ind_bt_desc.attrs["coordinates"])
         self.assertEqual("K", u_ind_bt_desc.attrs["units"])
 
+        u_ind_bt_full_asc = ds.variables["u_independent_BT_full_ascend"]
+        self.assertEqual((100, 360), u_ind_bt_full_asc.shape)
+        self.assertTrue(np.isnan(u_ind_bt_full_asc.values[99, 200]))
+        self.assertTrue(np.isnan(u_ind_bt_full_asc.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of monthly brightness temperature averages including cloudy pixels due to independent effects for ascending branches", u_ind_bt_full_asc.attrs["description"])
+        self.assertEqual("lon lat", u_ind_bt_full_asc.attrs["coordinates"])
+        self.assertEqual("K", u_ind_bt_full_asc.attrs["units"])
+
+        u_ind_bt_full_desc = ds.variables["u_independent_BT_full_descend"]
+        self.assertEqual((100, 360), u_ind_bt_full_desc.shape)
+        self.assertTrue(np.isnan(u_ind_bt_full_desc.values[0, 201]))
+        self.assertTrue(np.isnan(u_ind_bt_full_desc.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of monthly brightness temperature averages including cloudy pixels due to independent effects for descending branches", u_ind_bt_full_desc.attrs["description"])
+        self.assertEqual("lon lat", u_ind_bt_full_desc.attrs["coordinates"])
+        self.assertEqual("K", u_ind_bt_full_desc.attrs["units"])
+
         u_str_bt_asc = ds.variables["u_structured_BT_ascend"]
         self.assertEqual((100, 360), u_str_bt_asc.shape)
         self.assertTrue(np.isnan(u_str_bt_asc.values[1, 202]))
@@ -193,6 +227,22 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("lon lat", u_str_bt_desc.attrs["coordinates"])
         self.assertEqual("K", u_str_bt_desc.attrs["units"])
 
+        u_str_bt_full_asc = ds.variables["u_structured_BT_full_ascend"]
+        self.assertEqual((100, 360), u_str_bt_full_asc.shape)
+        self.assertTrue(np.isnan(u_str_bt_full_asc.values[1, 202]))
+        self.assertTrue(np.isnan(u_str_bt_full_asc.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of monthly brightness temperature averages including cloudy pixels due to structured effects for descending branches", u_str_bt_full_asc.attrs["description"])
+        self.assertEqual("lon lat", u_str_bt_full_asc.attrs["coordinates"])
+        self.assertEqual("K", u_str_bt_full_asc.attrs["units"])
+
+        u_str_bt_full_desc = ds.variables["u_structured_BT_full_descend"]
+        self.assertEqual((100, 360), u_str_bt_full_desc.shape)
+        self.assertTrue(np.isnan(u_str_bt_full_desc.values[2, 203]))
+        self.assertTrue(np.isnan(u_str_bt_full_desc.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of monthly brightness temperature averages including cloudy pixels due to structured effects for descending branches", u_str_bt_full_desc.attrs["description"])
+        self.assertEqual("lon lat", u_str_bt_full_desc.attrs["coordinates"])
+        self.assertEqual("K", u_str_bt_full_desc.attrs["units"])
+
         u_com_bt_asc = ds.variables["u_common_BT_ascend"]
         self.assertEqual((100, 360), u_com_bt_asc.shape)
         self.assertTrue(np.isnan(u_com_bt_asc.values[3, 204]))
@@ -208,6 +258,22 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("Uncertainty of brightness temperature due to common effects for descending passes", u_com_bt_desc.attrs["description"])
         self.assertEqual("lon lat", u_com_bt_desc.attrs["coordinates"])
         self.assertEqual("K", u_com_bt_desc.attrs["units"])
+
+        u_com_bt_full_asc = ds.variables["u_common_BT_full_ascend"]
+        self.assertEqual((100, 360), u_com_bt_full_asc.shape)
+        self.assertTrue(np.isnan(u_com_bt_full_asc.values[3, 204]))
+        self.assertTrue(np.isnan(u_com_bt_full_asc.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of monthly brightness temperature averages including cloudy pixels due to common effects for ascending branches", u_com_bt_full_asc.attrs["description"])
+        self.assertEqual("lon lat", u_com_bt_full_asc.attrs["coordinates"])
+        self.assertEqual("K", u_com_bt_full_asc.attrs["units"])
+
+        u_com_bt_full_desc = ds.variables["u_common_BT_full_descend"]
+        self.assertEqual((100, 360), u_com_bt_full_desc.shape)
+        self.assertTrue(np.isnan(u_com_bt_full_desc.values[5, 206]))
+        self.assertTrue(np.isnan(u_com_bt_full_desc.attrs["_FillValue"]))
+        self.assertEqual("Uncertainty of monthly brightness temperature averages including cloudy pixels due to common effects for descending branches", u_com_bt_full_desc.attrs["description"])
+        self.assertEqual("lon lat", u_com_bt_full_desc.attrs["coordinates"])
+        self.assertEqual("K", u_com_bt_full_desc.attrs["units"])
 
         bt_inhom_asc = ds.variables["BT_inhomogeneity_ascend"]
         self.assertEqual((100, 360), bt_inhom_asc.shape)

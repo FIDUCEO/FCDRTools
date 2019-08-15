@@ -39,20 +39,34 @@ class UTH:
 
         dataset["BT_ascend"] = UTH._create_bt_variable(width, height, description="Monthly average of all brightness temperatures which were used to retrieve UTH in a grid box for ascending passes (calculated from daily averages)")
         dataset["BT_descend"] = UTH._create_bt_variable(width, height, description="Monthly average of all brightness temperatures which were used to retrieve UTH in a grid box for descending passes (calculated from daily averages)")
+        dataset["BT_full_ascend"] = UTH._create_bt_variable(width, height, description="Monthly average of all brightness temperatures - including cloudy pixels - for ascending branches (calculated from daily averages)")
+        dataset["BT_full_descend"] = UTH._create_bt_variable(width, height, description="Monthly average of all brightness temperatures - including cloudy pixels - for descending branches (calculated from daily averages)")
 
         dataset["u_independent_BT_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to independent effects for ascending passes", coordinates="lon lat",
                                                                        units="K")
         dataset["u_independent_BT_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to independent effects for descending passes", coordinates="lon lat",
+                                                                        units="K")
+        dataset["u_independent_BT_full_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of monthly brightness temperature averages including cloudy pixels due to independent effects for ascending branches", coordinates="lon lat",
+                                                                       units="K")
+        dataset["u_independent_BT_full_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of monthly brightness temperature averages including cloudy pixels due to independent effects for descending branches", coordinates="lon lat",
                                                                         units="K")
 
         dataset["u_structured_BT_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to structured effects for ascending passes", coordinates="lon lat",
                                                                       units="K")
         dataset["u_structured_BT_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to structured effects for descending passes", coordinates="lon lat",
                                                                        units="K")
+        dataset["u_structured_BT_full_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of monthly brightness temperature averages including cloudy pixels due to structured effects for descending branches", coordinates="lon lat",
+                                                                      units="K")
+        dataset["u_structured_BT_full_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of monthly brightness temperature averages including cloudy pixels due to structured effects for descending branches", coordinates="lon lat",
+                                                                       units="K")
 
         dataset["u_common_BT_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to common effects for ascending passes", coordinates="lon lat",
                                                                   units="K")
         dataset["u_common_BT_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of brightness temperature due to common effects for descending passes", coordinates="lon lat",
+                                                                   units="K")
+        dataset["u_common_BT_full_ascend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of monthly brightness temperature averages including cloudy pixels due to common effects for ascending branches", coordinates="lon lat",
+                                                                  units="K")
+        dataset["u_common_BT_full_descend"] = tu.create_CDR_uncertainty(width, height, "Uncertainty of monthly brightness temperature averages including cloudy pixels due to common effects for descending branches", coordinates="lon lat",
                                                                    units="K")
 
         dataset["BT_inhomogeneity_ascend"] = tu.create_CDR_uncertainty(width, height,
