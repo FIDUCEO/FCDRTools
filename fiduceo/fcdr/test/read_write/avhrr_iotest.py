@@ -79,15 +79,15 @@ class AvhrrIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch1"]
-            self.assertAlmostEqual(0.34, variable.data[19, 19], 8)
+            self.assertAlmostEqual(-0.31336, variable.data[19, 19], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch2"]
-            self.assertAlmostEqual(0.38, variable.data[20, 20], 8)
+            self.assertAlmostEqual(-0.27536, variable.data[20, 20], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch3a"]
-            self.assertAlmostEqual(0.42, variable.data[21, 21], 8)
+            self.assertAlmostEqual(-0.23536, variable.data[21, 21], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_structured_Ch4"]
@@ -99,7 +99,7 @@ class AvhrrIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_common_Ch1"]
-            self.assertAlmostEqual(0.07, variable.data[24, 24], 8)
+            self.assertAlmostEqual(0.072, variable.data[24, 24], 8)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["u_common_Ch2"]
@@ -309,15 +309,15 @@ class AvhrrIoTest(unittest.TestCase):
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch1_u_Refl"]
-            self.assertAlmostEqual(0.16384, variable.data[64, 64], 6)
+            self.assertAlmostEqual(20.48, variable.data[64, 64], 6)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch2_u_Refl"]
-            self.assertAlmostEqual(-0.17688, variable.data[65, 65], 6)
+            self.assertAlmostEqual(21.45, variable.data[65, 65], 6)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch3a_u_Refl"]
-            self.assertAlmostEqual(0.15776, variable.data[66, 66], 6)
+            self.assertAlmostEqual(22.44, variable.data[66, 66], 6)
             self.assertEqual(EXPECTED_CHUNKING, variable.encoding["chunksizes"])
 
             variable = target_data["Ch3b_u_Bt"]

@@ -1,9 +1,9 @@
 import numpy as np
 from xarray import Variable
 
+from fiduceo.common.writer.default_data import DefaultData
 from fiduceo.common.writer.templates.templateutil import TemplateUtil as tu
 from fiduceo.fcdr.writer.correlation import Correlation as corr
-from fiduceo.common.writer.default_data import DefaultData
 
 SWATH_WIDTH = 409
 PRT_WIDTH = 3
@@ -119,7 +119,8 @@ class AVHRR:
         variable = Variable(["y"], default_vector)
         tu.add_fill_value(variable, 255)
         variable.attrs["long_name"] = 'Indicator of original file'
-        variable.attrs["description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
+        variable.attrs[
+            "description"] = "Indicator for mapping each line to its corresponding original level 1b file. See global attribute 'source' for the filenames. 0 corresponds to 1st listed file, 1 to 2nd file."
         dataset["scanline_map_to_origl1bfile"] = variable
 
         default_vector = DefaultData.create_default_vector(height, np.int16, fill_value=DefaultData.get_default_fill_value(np.int16))
@@ -140,20 +141,17 @@ class AVHRR:
         # u_independent_Ch1-3a
         long_names = ["independent uncertainty per pixel for channel 1", "independent uncertainty per pixel for channel 2", "independent uncertainty per pixel for channel 3a"]
         names = ["u_independent_Ch1", "u_independent_Ch2", "u_independent_Ch3a"]
-        units = ["Reflectance", "Reflectance", "Reflectance"]
-        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names, units)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, [10, 10000], 1e-5, long_names, "1")
 
         # u_structured_Ch1-3a
         long_names = ["structured uncertainty per pixel for channel 1", "structured uncertainty per pixel for channel 2", "structured uncertainty per pixel for channel 3a"]
         names = ["u_structured_Ch1", "u_structured_Ch2", "u_structured_Ch3a"]
-        units = ["Reflectance", "Reflectance", "Reflectance"]
-        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names, units=units, structured=True)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, [10, 10000], 1e-5, long_names, "1")
 
         # u_common_Ch1-3a
         long_names = ["common uncertainty per pixel for channel 1", "common uncertainty per pixel for channel 2", "common uncertainty per pixel for channel 3a"]
         names = ["u_common_Ch1", "u_common_Ch2", "u_common_Ch3a"]
-        units = ["percent", "percent", "percent"]
-        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names, units=units, structured=True)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, [1, 1000], 0.001, long_names, "percent")
 
         # u_independent_Ch3b-5
         long_names = ["independent uncertainty per pixel for channel 3b", "independent uncertainty per pixel for channel 4", "independent uncertainty per pixel for channel 5"]
@@ -289,7 +287,7 @@ class AVHRR:
         long_names = ["Ch1 Total uncertainty on toa reflectance", "Ch2 Total uncertainty on toa reflectance", "Ch3a Total uncertainty on toa reflectance"]
         names = ["Ch1_u_Refl", "Ch2_u_Refl", "Ch3a_u_Refl"]
         units = ["Reflectance", "Reflectance", "Reflectance"]
-        AVHRR._add_refl_uncertainties_variables(dataset, height, names, long_names, units)
+        AVHRR._add_refl_uncertainties_variables(dataset, height, names, [3, 5], 0.01, long_names, "1")
 
         # Chx_u_Bt
         standard_names = ["Ch3b Total uncertainty on brightness temperature", "Ch4 Total uncertainty on brightness temperature", "Ch5 Total uncertainty on brightness temperature"]
@@ -326,9 +324,9 @@ class AVHRR:
             dataset[name] = variable
 
     @staticmethod
-    def _add_refl_uncertainties_variables(dataset, height, names, long_names, units, structured=False):
+    def _add_refl_uncertainties_variables(dataset, height, names, minmax, scale_factor, long_names, units):
         for i, name in enumerate(names):
-            variable = AVHRR._create_refl_uncertainty_variable(height, long_name=long_names[i], structured=structured, units=units[i])
+            variable = AVHRR._create_refl_uncertainty_variable(height, minmax, scale_factor, long_names[i], units)
             dataset[name] = variable
 
     @staticmethod
@@ -365,7 +363,7 @@ class AVHRR:
         return variable
 
     @staticmethod
-    def _create_refl_uncertainty_variable(height, long_name=None, structured=False, units=None):
+    def _create_refl_uncertainty_variable(height, minmax, scale_factor, long_name=None, units=None):
         default_array = DefaultData.create_default_array(SWATH_WIDTH, height, np.float32, fill_value=np.NaN)
         variable = Variable(["y", "x"], default_array)
 
@@ -373,14 +371,10 @@ class AVHRR:
         tu.add_geolocation_attribute(variable)
         variable.attrs["long_name"] = long_name
 
-        if structured:
-            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.01, chunksizes=CHUNKS_2D)
-            variable.attrs["valid_min"] = 3
-            variable.attrs["valid_max"] = 5
-        else:
-            tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), 0.00001, chunksizes=CHUNKS_2D)
-            variable.attrs["valid_max"] = 1000
-            variable.attrs["valid_min"] = 10
+        tu.add_encoding(variable, np.int16, DefaultData.get_default_fill_value(np.int16), scale_factor, chunksizes=CHUNKS_2D)
+        variable.attrs["valid_min"] = minmax[0]
+        variable.attrs["valid_max"] = minmax[1]
+
         return variable
 
     @staticmethod
