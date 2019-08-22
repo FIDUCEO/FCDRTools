@@ -46,6 +46,10 @@ class MVIRI_STATIC:
         dataset["longitude_ir_wv"] = variable
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        pass
+
+    @staticmethod
     def add_template_key(dataset):
         dataset.attrs["template_key"] = "MVIRI_STATIC"
 

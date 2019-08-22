@@ -56,6 +56,19 @@ class HIRS:
         HIRS.add_coordinates(dataset)
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        dataset.attrs["project"] = "FIDUCEO"
+        dataset.attrs["creator_url"] = "http://www.fiduceo.eu/"
+        dataset.attrs["creator_name"] = None
+        dataset.attrs["creator_email"] = None
+        dataset.attrs["fcdr_software_version"] = None
+        dataset.attrs["data_version"] = None
+        dataset.attrs["time_coverage_start"] = None
+        dataset.attrs["time_coverage_end"] = None
+        dataset.attrs["time_coverage_duration"] = None
+        dataset.attrs["platform"] = None
+
+    @staticmethod
     def add_extended_flag_variables(dataset, height):
         # quality_channel_bitmask
         default_array = DefaultData.create_default_array(NUM_CHANNELS, height, np.uint8, dims_names=["y", "channel"], fill_value=0)

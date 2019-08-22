@@ -151,6 +151,19 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual("Original_Scan_line_number", scnlin_orig.attrs['long_name'])
         self.assertEqual("Original scan line numbers from corresponding l1b records", scnlin_orig.attrs['description'])
 
+    def assert_specific_global_metadata(self, ds):
+        attributes = ds.attrs
+        self.assertEqual(attributes["project"], "FIDUCEO")
+        self.assertEqual(attributes["creator_url"], "http://www.fiduceo.eu/")
+        self.assertIsNone(attributes["creator_name"])
+        self.assertIsNone(attributes["creator_email"])
+        self.assertIsNone(attributes["fcdr_software_version"])
+        self.assertIsNone(attributes["data_version"])
+        self.assertIsNone(attributes["time_coverage_start"])
+        self.assertIsNone(attributes["time_coverage_end"])
+        self.assertIsNone(attributes["time_coverage_duration"])
+        self.assertIsNone(attributes["platform"])
+
     def assert_extended_quality_flags(self, ds):
         chqualflags = ds.variables["quality_channel_bitmask"]
         self.assertEqual((6, 19), chqualflags.shape)

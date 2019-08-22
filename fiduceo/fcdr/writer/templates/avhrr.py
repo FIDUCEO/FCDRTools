@@ -133,6 +133,10 @@ class AVHRR:
         tu.add_coordinates(dataset, ["Ch1", "Ch2", "Ch3a", "Ch3b", "Ch4", "Ch5"])
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        pass
+
+    @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
 

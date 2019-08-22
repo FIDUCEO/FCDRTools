@@ -165,6 +165,10 @@ class MVIRI:
         dataset["srf_size"] = Coordinate("srf_size", np.arange(srf_size_dim, dtype=np.uint16))
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        pass
+
+    @staticmethod
     def get_swath_width():
         return FULL_SIZE
 

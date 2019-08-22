@@ -16,6 +16,10 @@ class HIRS2(HIRS):
         HIRS.add_easy_fcdr_variables(dataset, height, corr_dx, corr_dy, lut_size)
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        HIRS.add_specific_global_metadata(dataset)
+
+    @staticmethod
     def add_full_fcdr_variables(dataset, height):
         HIRS.add_full_fcdr_variables(dataset, height)
 

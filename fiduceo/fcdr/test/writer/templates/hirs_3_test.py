@@ -43,6 +43,12 @@ class HIRS3Test(unittest.TestCase):
         Assertions.assert_lookup_tables(self, ds, NUM_CHANNELS, 23)
         Assertions.assert_correlation_coefficients(self, ds, NUM_CHANNELS, delta_x, delta_y)
 
+    def test_add_specific_global_metadata(self):
+        ha = HIRSAssert()
+        ds = xr.Dataset()
+        HIRS3.add_specific_global_metadata(ds)
+        ha.assert_specific_global_metadata(ds)
+
     def test_add_full_fcdr_variables(self):
         ha = HIRSAssert()
         ds = xr.Dataset()

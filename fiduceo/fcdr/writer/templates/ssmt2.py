@@ -92,6 +92,10 @@ class SSMT2:
         dataset["warm_counts"] = variable
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        pass
+
+    @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
 

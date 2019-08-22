@@ -112,6 +112,10 @@ class AMSUB_MHS:
         dataset["acquisition_time"] = variable
 
     @staticmethod
+    def add_specific_global_metadata(dataset):
+        pass
+
+    @staticmethod
     def get_swath_width():
         return SWATH_WIDTH
 
