@@ -131,11 +131,16 @@ class HIRS:
     def add_common_angles(dataset, height):
         chunking_2d = HIRS._ensure_chunking_2d(height)
         dataset["satellite_zenith_angle"] = HIRS._create_geo_angle_variable("platform_zenith_angle", height, chunking=chunking_2d)
+        dataset["satellite_zenith_angle"].variable.attrs["valid_range"] = [0, 180]
         dataset["satellite_azimuth_angle"] = HIRS._create_geo_angle_variable("sensor_azimuth_angle", height, chunking=chunking_2d)
-        dataset["satellite_azimuth_angle"].variable.attrs["long_name"] = "local_azimuth_angle"
+        dataset["satellite_azimuth_angle"].variable.attrs["valid_range"] = [0, 360]
+        dataset["satellite_azimuth_angle"].variable.attrs["comment"] = "clockwise from north"
 
         dataset["solar_zenith_angle"] = HIRS._create_geo_angle_variable("solar_zenith_angle", height, orig_name="solar_zenith_angle", chunking=chunking_2d)
+        dataset["solar_zenith_angle"].variable.attrs["valid_range"] = [0, 180]
         dataset["solar_azimuth_angle"] = HIRS._create_geo_angle_variable("solar_azimuth_angle", height, chunking=chunking_2d)
+        dataset["solar_azimuth_angle"].variable.attrs["valid_range"] = [0, 360]
+        dataset["solar_azimuth_angle"].variable.attrs["comment"] = "clockwise from north"
 
     @staticmethod
     def add_bt_variable(dataset, height):
@@ -643,7 +648,7 @@ class HIRS:
 
         tu.add_units(variable, "degree")
         tu.add_geolocation_attribute(variable)
-        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, -180.0, chunking)
+        tu.add_encoding(variable, np.uint16, DefaultData.get_default_fill_value(np.uint16), 0.01, 0, chunking)
         return variable
 
     @staticmethod

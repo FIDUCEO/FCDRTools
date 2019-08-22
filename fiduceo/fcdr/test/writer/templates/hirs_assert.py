@@ -34,12 +34,13 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(np.uint16, satellite_zenith_angle.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_zenith_angle.encoding['_FillValue'])
         self.assertEqual(0.01, satellite_zenith_angle.encoding['scale_factor'])
-        self.assertEqual(-180.0, satellite_zenith_angle.encoding['add_offset'])
+        self.assertEqual(0, satellite_zenith_angle.encoding['add_offset'])
         if chunking is not None:
             self.assertEqual(chunking, satellite_zenith_angle.encoding['chunksizes'])
         self.assertEqual("platform_zenith_angle", satellite_zenith_angle.attrs["standard_name"])
         self.assertEqual("degree", satellite_zenith_angle.attrs["units"])
         self.assertEqual("longitude latitude", satellite_zenith_angle.attrs["coordinates"])
+        self.assertEqual([0, 180], satellite_zenith_angle.attrs["valid_range"])
 
         solar_zenith_angle = ds.variables["solar_zenith_angle"]
         self.assertEqual((6, 56), solar_zenith_angle.shape)
@@ -47,13 +48,14 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(np.uint16, solar_zenith_angle.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_zenith_angle.encoding['_FillValue'])
         self.assertEqual(0.01, solar_zenith_angle.encoding['scale_factor'])
-        self.assertEqual(-180.0, solar_zenith_angle.encoding['add_offset'])
+        self.assertEqual(0, solar_zenith_angle.encoding['add_offset'])
         if chunking is not None:
             self.assertEqual(chunking, solar_zenith_angle.encoding['chunksizes'])
         self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["standard_name"])
         self.assertEqual("solar_zenith_angle", solar_zenith_angle.attrs["orig_name"])
         self.assertEqual("degree", solar_zenith_angle.attrs["units"])
         self.assertEqual("longitude latitude", solar_zenith_angle.attrs["coordinates"])
+        self.assertEqual([0, 180], solar_zenith_angle.attrs["valid_range"])
 
         satellite_azimuth_angle = ds.variables["satellite_azimuth_angle"]
         self.assertEqual((6, 56), satellite_azimuth_angle.shape)
@@ -61,11 +63,12 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(np.uint16, satellite_azimuth_angle.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), satellite_azimuth_angle.encoding['_FillValue'])
         self.assertEqual(0.01, satellite_azimuth_angle.encoding['scale_factor'])
-        self.assertEqual(-180.0, satellite_azimuth_angle.encoding['add_offset'])
+        self.assertEqual(0, satellite_azimuth_angle.encoding['add_offset'])
         if chunking is not None:
             self.assertEqual(chunking, satellite_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("sensor_azimuth_angle", satellite_azimuth_angle.attrs["standard_name"])
-        self.assertEqual("local_azimuth_angle", satellite_azimuth_angle.attrs["long_name"])
+        self.assertEqual([0, 360], satellite_azimuth_angle.attrs["valid_range"])
+        self.assertEqual("clockwise from north", satellite_azimuth_angle.attrs["comment"])
         self.assertEqual("degree", satellite_azimuth_angle.attrs["units"])
         self.assertEqual("longitude latitude", satellite_azimuth_angle.attrs["coordinates"])
 
@@ -75,10 +78,12 @@ class HIRSAssert(unittest.TestCase):
         self.assertEqual(np.uint16, solar_azimuth_angle.encoding['dtype'])
         self.assertEqual(DefaultData.get_default_fill_value(np.uint16), solar_azimuth_angle.encoding['_FillValue'])
         self.assertEqual(0.01, solar_azimuth_angle.encoding['scale_factor'])
-        self.assertEqual(-180.0, solar_azimuth_angle.encoding['add_offset'])
+        self.assertEqual(0, solar_azimuth_angle.encoding['add_offset'])
         if chunking is not None:
             self.assertEqual(chunking, solar_azimuth_angle.encoding['chunksizes'])
         self.assertEqual("solar_azimuth_angle", solar_azimuth_angle.attrs["standard_name"])
+        self.assertEqual([0, 360], solar_azimuth_angle.attrs["valid_range"])
+        self.assertEqual("clockwise from north", solar_azimuth_angle.attrs["comment"])
         self.assertEqual("degree", solar_azimuth_angle.attrs["units"])
         self.assertEqual("longitude latitude", solar_azimuth_angle.attrs["coordinates"])
 
