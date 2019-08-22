@@ -151,7 +151,7 @@ class Assertions:
         test_case.assertEqual("This dataset is released for use under CC-BY licence (https://creativecommons.org/licenses/by/4.0/) and was developed in the EC "
                               "FIDUCEO project \"Fidelity and Uncertainty in Climate Data Records from Earth "
                               "Observations\". Grant Agreement: 638822.", attributes["licence"])
-        test_case.assertEqual("2.0.0", attributes["writer_version"])
+        test_case.assertEqual("2.0.1", attributes["writer_version"])
 
         test_case.assertIsNone(attributes["institution"])
         test_case.assertIsNone(attributes["source"])
