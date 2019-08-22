@@ -295,7 +295,17 @@ class HirsEASYIoTest(unittest.TestCase):
         hirs_easy.attrs["source"] = "invention"
         hirs_easy.attrs["history"] = "new"
         hirs_easy.attrs["references"] = "myself"
-        hirs_easy.attrs["comment"] = "should define a test version of this set"
+        hirs_easy.attrs["project"] = "test-project"
+        hirs_easy.attrs["creator_url"] = "test-url"
+        hirs_easy.attrs["creator_name"] = "test-name"
+        hirs_easy.attrs["creator_email"] = "test@fiduceo.eu"
+        hirs_easy.attrs["fcdr_software_version"] = "12"
+        hirs_easy.attrs["data_version"] = "13"
+        hirs_easy.attrs["time_coverage_start"] = "now"
+        hirs_easy.attrs["time_coverage_end"] = "later"
+        hirs_easy.attrs["time_coverage_duration"] = "some moment"
+        hirs_easy.attrs["platform"] = "yo"
+        hirs_easy.attrs["comment"] = "what?"
 
         for x in range(0, 56):
             hirs_easy["bt"].data[:, :, x] = np.ones((944), np.int16) * x * 0.01
