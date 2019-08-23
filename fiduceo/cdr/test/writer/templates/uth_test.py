@@ -291,6 +291,22 @@ class UTHTest(unittest.TestCase):
         self.assertEqual("lon lat", bt_inhom_desc.attrs["coordinates"])
         self.assertEqual("K", bt_inhom_desc.attrs["units"])
 
+        bt_full_inhom_asc = ds.variables["BT_full_inhomogeneity_ascend"]
+        self.assertEqual((100, 360), bt_full_inhom_asc.shape)
+        self.assertTrue(np.isnan(bt_full_inhom_asc.values[73, 174]))
+        self.assertTrue(np.isnan(bt_full_inhom_asc.attrs["_FillValue"]))
+        self.assertEqual("Standard deviation of all brightness temperatures - including cloudy pixels - in a grid box for ascending passes", bt_full_inhom_asc.attrs["description"])
+        self.assertEqual("lon lat", bt_full_inhom_asc.attrs["coordinates"])
+        self.assertEqual("K", bt_full_inhom_asc.attrs["units"])
+
+        bt_full_inhom_desc = ds.variables["BT_full_inhomogeneity_descend"]
+        self.assertEqual((100, 360), bt_full_inhom_desc.shape)
+        self.assertTrue(np.isnan(bt_full_inhom_desc.values[74, 175]))
+        self.assertTrue(np.isnan(bt_full_inhom_desc.attrs["_FillValue"]))
+        self.assertEqual("Standard deviation of all brightness temperatures - including cloudy pixels - in a grid box for descending passes", bt_full_inhom_desc.attrs["description"])
+        self.assertEqual("lon lat", bt_full_inhom_desc.attrs["coordinates"])
+        self.assertEqual("K", bt_full_inhom_desc.attrs["units"])
+
         obs_count_all_asc = ds.variables["observation_count_all_ascend"]
         self.assertEqual((100, 360), obs_count_all_asc.shape)
         self.assertEqual(-32767, obs_count_all_asc.values[68, 180])
