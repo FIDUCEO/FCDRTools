@@ -469,6 +469,12 @@ class AvhrrIoTest(unittest.TestCase):
         dataset.attrs["history"] = "new"
         dataset.attrs["references"] = "myself"
         dataset.attrs["comment"] = "should define a test version of this set"
+        dataset.attrs["Ch3a_Ch3b_split_file"] = "maybe"
+        dataset.attrs["Ch3a_only"] = "nope"
+        dataset.attrs["Ch3b_only"] = "dunno"
+        dataset.attrs["UUID"] = "abcdefghi"
+        dataset.attrs["sensor"] = "yo"
+        dataset.attrs["platform"] = "up there"
 
     def add_geolocation_data(self, dataset):
         for x in range(0, PRODUCT_WIDTH):

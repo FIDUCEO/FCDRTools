@@ -29,6 +29,20 @@ class AVHRRTest(unittest.TestCase):
         self.assertEqual("Acquisition time in seconds since 1970-01-01 00:00:00", time.attrs["long_name"])
         self.assertEqual("s", time.attrs["units"])
 
+        rel_azimuth = ds.variables["relative_azimuth_angle"]
+        self.assertEqual((5, 409), rel_azimuth.shape)
+        self.assertTrue(np.isnan(rel_azimuth.data[1, 6]))
+        self.assertEqual("relative_azimuth_angle", rel_azimuth.attrs["standard_name"])
+        self.assertEqual("degree", rel_azimuth.attrs["units"])
+        self.assertEqual(18000, rel_azimuth.attrs["valid_max"])
+        self.assertEqual(-18000, rel_azimuth.attrs["valid_min"])
+        self.assertEqual("longitude latitude", rel_azimuth.attrs["coordinates"])
+        self.assertEqual(np.int16, rel_azimuth.encoding['dtype'])
+        self.assertEqual(DefaultData.get_default_fill_value(np.int16), rel_azimuth.encoding['_FillValue'])
+        self.assertEqual(0.01, rel_azimuth.encoding['scale_factor'])
+        self.assertEqual(0.0, rel_azimuth.encoding['add_offset'])
+        self.assertEqual(CHUNKING, rel_azimuth.encoding["chunksizes"])
+
         sat_zenith = ds.variables["satellite_zenith_angle"]
         self.assertEqual((5, 409), sat_zenith.shape)
         self.assertTrue(np.isnan(sat_zenith.data[0, 5]))
@@ -348,6 +362,19 @@ class AVHRRTest(unittest.TestCase):
         AVHRR.add_template_key(ds)
 
         self.assertEqual("AVHRR", ds.attrs["template_key"])
+
+    def test_add_specific_global_metadata(self):
+        ds = xr.Dataset()
+
+        AVHRR.add_specific_global_metadata(ds)
+
+        self.assertIsNone(ds.attrs["Ch3a_Ch3b_split_file"])
+        self.assertIsNone(ds.attrs["Ch3a_only"])
+        self.assertIsNone(ds.attrs["Ch3b_only"])
+        self.assertIsNone(ds.attrs["UUID"])
+        self.assertIsNone(ds.attrs["comment"])
+        self.assertIsNone(ds.attrs["sensor"])
+        self.assertIsNone(ds.attrs["platform"])
 
     def _assert_earth_counts_pdf(self, ds, name):
         variable = ds.variables[name]

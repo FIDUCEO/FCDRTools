@@ -134,7 +134,13 @@ class AVHRR:
 
     @staticmethod
     def add_specific_global_metadata(dataset):
-        pass
+        dataset.attrs["Ch3a_Ch3b_split_file"] = None
+        dataset.attrs["Ch3a_only"] = None
+        dataset.attrs["Ch3b_only"] = None
+        dataset.attrs["UUID"] = None
+        dataset.attrs["comment"] = None
+        dataset.attrs["sensor"] = None
+        dataset.attrs["platform"] = None
 
     @staticmethod
     def get_swath_width():
